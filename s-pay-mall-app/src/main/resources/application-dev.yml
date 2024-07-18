@@ -1,39 +1,59 @@
 server:
   port: 8091
+  tomcat:
+    max-connections: 20
+    threads:
+      max: 20
+      min-spare: 10
+    accept-count: 10
 
-# 线程池配置
-thread:
-  pool:
-    executor:
-      config:
-        core-pool-size: 20
-        max-pool-size: 50
-        keep-alive-time: 5000
-        block-queue-size: 5000
-        policy: CallerRunsPolicy
-
-# 数据库配置；启动时配置数据库资源信息
 spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://127.0.0.1:3306/xfg_frame_archetype?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+    url: jdbc:mysql://192.168.1.108:13306/s-pay-mall?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-  hikari:
-    pool-name: Retail_HikariCP
-    minimum-idle: 15 #最小空闲连接数量
-    idle-timeout: 180000 #空闲连接存活最大时间，默认600000（10分钟）
-    maximum-pool-size: 25 #连接池最大连接数，默认是10
-    auto-commit: true  #此属性控制从池返回的连接的默认自动提交行为,默认值：true
-    max-lifetime: 1800000 #此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
-    connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
-    connection-test-query: SELECT 1
-  type: com.zaxxer.hikari.HikariDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat
 
-# MyBatis 配置【如需使用记得打开】
-#mybatis:
-#  mapper-locations: classpath:/mybatis/mapper/*.xml
-#  config-location:  classpath:/mybatis/config/mybatis-config.xml
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  config-location:  classpath:/mybatis/config/mybatis-config.xml
+
+# Redis
+redis:
+  sdk:
+    config:
+      host: 192.168.1.108
+      port: 16379
+      pool-size: 10
+      min-idle-size: 5
+      idle-timeout: 30000
+      connect-timeout: 5000
+      retry-attempts: 3
+      retry-interval: 1000
+      ping-interval: 60000
+      keep-alive: true
+
+# 支付宝支付 - 沙箱 https://opendocs.alipay.com/common/02kkv7
+alipay:
+  enabled: true
+  app_id: 9021000132689924
+  merchant_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJN3l3DV6I2rGzMJo+fUjuyNWlneX6u2XPzLinviCtrmy2hLCipx0H37PzPVQbRWodiKThBaIhDbGK15mx0/UA+mLJOpK8fqAKXiuSgZ8J7zl4Gox7rySgHI0TA9aKNwMaeG2UovGUZiIL66Lx9u+Tn+X/hNFqrsEiDjHB80Z1AofRtboaI+4tCWq+/jsNgfJdOJf69qyqLXL1BtAo6UyXZpkGdZshDjO87V85Bmjl7ruVjIsmgtRHDO86HHnLHmZC3fZMG1eteI58MZWS8q5NoOQnkfw5l9m2+/rrAjpIqDIPxt6I289l/fVIG5CUX3N7+ws76YjBmN+LMy92/prFAgMBAAECggEAaT5NQYzVhy4FwaRziZ5aRBtyEncLH8aADmO89ZuUQOJZq5wWRorab2GbCeNuEQSqoUBfBeBmO+fe1tkKnyQs9LUW87SjO0P7yDf2P4Z/zwTXFVF3kp4A/3UmlwEImjYbgUAA/FIF7IZxcqcm8WMu2hF4PQVIAgVLSK2OaG4JClDoXE/R/HZrSv/AU3cMkuFsMHewuuDSHWYNdZb1Mqg6TrFt0+ryYciybkpfHZPvB6zqZG+c0gStZ6tTzviGi0T26zlHp3EdsLJ5Mmfw0z1TY2PDX/iICO/mCRJt1yT2E2h82QgFPszjS9wQ8OuxsT0eeUYA+4LA35juU4+GbpOhgQKBgQDI5TaVDzfLW5K0mw/1+6ZVq9Xgrg0p6kBUGyVfw2Ne47UCWsT1Q3eQTzMIhM3KPVeKgHPF4JT3tv7sCjbOspjcg9hw+zxAq/2jO1JZHffOd1id8rj7NmtLB0q9BQPNmtllmjYaJgPW45KY09vBtKWLxoVYp9qlxZIMIHZO58gZMQKBgQCu2sW9tMdoP2dvqzD5+vXN9lV/uUgCd+6dC4D3GIBAB3aRvnqZuGo3i7DBwdL2VwsTSs54CTlppQYKJHomPkhus68J69rWLI4cDJUblNHvNCtVHBDp8bnha7MfG99ppuDq/RK3X+jRTOqjk5uuVfBHR8GSBEwFGuvVdjfMslK11QKBgGl9Gq0owYZx/lYBul7TFmOUCImjO1xQGhlP688ePRa9gPXMjfGvzJ+lRsnpWlog3c/nZWN5ax+sIq31KxRcabIZNVUWR2w6I8RLyRDskIwE1S6THpki2TIbkR4x/O5AqnkUgeY3Ifr7oqXHUXSkk+0SgECuWzyCww7FGPqT8NlxAoGAVSOzWy72VZ1h2S7rNx1qqLIEaZ+nH4SUTCW40xg8AnFf25F7EvSHy6oaFA4zkb1KaEdph2s+aGFxMmkWjR6QmE6nsVYFhXnGbIP36qkpG6c0Xkm/Npp8HvYZDtG8lC4soF8/yMhLjfY83g9Wo6m2yI55A4dSGL5GDPd2Lha6TU0CgYEAlUwdoWap7Ws1M83pQyQaGHoDljRxrlk0He2OJ8icKLhDnTCJSdg4v+79W9+zLWrfcLtkQlNJRop1RZkns7RAWJq+N/9SppbFNhSxy5w3YzjTsSTKyLBPtFKpyqo9o5MzUelZFd6KWRbCY/ThEhQb+WCYXjP0U5Vx97WjWvxp6/s=
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmgtSO8GV5YSl01AWgGWe2xKJ9oDfjzf5vNtJS6SSc5klmGMToVdsi3gmLipN04yzmnEEchmFxsuxKLLhdQuC4d9V74I6CVIZPPHtaSuz/T3EZTHtQIGwF705Yrq1bd63l70iTfkrS0Ry9f72SDZEBBLllXfFo+otChwRRN+UXDd8X/bplV3/cbRncV5yWRnHHCgzQiwpH3ilS+sOmMfdfac0bi/xB7HIU6nUX04VCjAR7itSr0OmU8HC6p20Ubvjs45R6VuR7FMI+OahCd3LDe/ayelScfQ4zavruk4HGx3TDH4hLDA3N+xid5Cu5erLDPHtFXfnQHI4n/opQaXo5wIDAQAB
+  notify_url: http://xfg-studio.natapp1.cc/api/v1/alipay/pay_notify
+  return_url: https://gaga.plus
+  gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
 
 # 日志
 logging:

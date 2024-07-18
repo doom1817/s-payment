@@ -1,5 +1,5 @@
 spring:
   config:
-    name: s-pay-mall-app
+    name: xfg-dev-tech
   profiles:
     active: dev

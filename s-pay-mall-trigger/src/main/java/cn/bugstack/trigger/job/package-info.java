@@ -1,4 +1,4 @@
 /**
- * 任务服务，可以选择使用 Spring 默认提供的 Schedule https://bugstack.cn/md/road-map/quartz.html
+ * 可添加定时任务，轮训超时订单状态
  */
 package cn.bugstack.trigger.job;

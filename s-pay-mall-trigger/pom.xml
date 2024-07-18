@@ -36,6 +36,10 @@
             <groupId>cn.bugstack</groupId>
             <artifactId>s-pay-mall-domain</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.bugstack</groupId>
+            <artifactId>s-pay-mall-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

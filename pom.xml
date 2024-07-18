@@ -13,6 +13,7 @@
         <module>s-pay-mall-trigger</module>
         <module>s-pay-mall-infrastructure</module>
         <module>s-pay-mall-types</module>
+        <module>s-pay-mall-api</module>
     </modules>
 
     <repositories>
@@ -114,6 +115,17 @@
                 <artifactId>commons-codec</artifactId>
                 <version>1.15</version>
             </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>3.26.0</version>
+            </dependency>
+            <!-- 支付宝沙箱支付对接文档：https://opendocs.alipay.com/common/02kkv7 -->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>4.38.157.ALL</version>
+            </dependency>
 
             <!-- 工程模块 -->
             <dependency>
@@ -134,6 +146,11 @@
             <dependency>
                 <groupId>cn.bugstack</groupId>
                 <artifactId>s-pay-mall-trigger</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.bugstack</groupId>
+                <artifactId>s-pay-mall-api</artifactId>
                 <version>1.0</version>
             </dependency>
         </dependencies>
