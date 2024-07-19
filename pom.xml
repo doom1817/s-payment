@@ -135,6 +135,11 @@
                 <artifactId>adapter-rxjava2</artifactId>
                 <version>2.9.0</version>
             </dependency>
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>1.4.10</version>
+            </dependency>
             <!-- 支付宝沙箱支付对接文档：https://opendocs.alipay.com/common/02kkv7 -->
             <dependency>
                 <groupId>com.alipay.sdk</groupId>
