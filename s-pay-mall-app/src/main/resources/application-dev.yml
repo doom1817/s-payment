@@ -55,6 +55,12 @@ alipay:
   return_url: https://gaga.plus
   gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
 
+weixin:
+  config:
+    originalid: gh_e067c267e056
+    app-id: wx5a228ff69e28a91f
+    app-secret: 0bea03aa1310bac050aae79dd8703928
+
 # 日志
 logging:
   level:
