@@ -1,7 +1,7 @@
 package cn.bugstack.domain.auth.service;
 
-import cn.bugstack.auth.adapter.ILoginAdapter;
-import cn.bugstack.xfg.dev.tech.types.exception.AppException;
+import cn.bugstack.domain.auth.adapter.port.ILoginAdapter;
+import cn.bugstack.types.exception.AppException;
 import com.google.common.cache.Cache;
 import org.springframework.stereotype.Service;
 
