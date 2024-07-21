@@ -40,6 +40,7 @@ public class LoginPort implements ILoginAdapter {
             accessToken = weixinTokenResponseDTO.getAccess_token();
             weixinAccessToken.put(appid, accessToken);
         }
+
         // 2. 生成 ticket
         WeixinQrCodeRequestDTO request = WeixinQrCodeRequestDTO.builder()
                 .expire_seconds(2592000) // 过期时间单位为秒 2592000 = 30天
