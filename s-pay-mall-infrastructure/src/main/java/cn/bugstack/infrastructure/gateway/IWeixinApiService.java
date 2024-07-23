@@ -2,6 +2,7 @@ package cn.bugstack.infrastructure.gateway;
 
 import cn.bugstack.infrastructure.gateway.dto.WeixinQrCodeRequestDTO;
 import cn.bugstack.infrastructure.gateway.dto.WeixinQrCodeResponseDTO;
+import cn.bugstack.infrastructure.gateway.dto.WeixinTemplateMessageDTO;
 import cn.bugstack.infrastructure.gateway.dto.WeixinTokenResponseDTO;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -43,5 +44,17 @@ public interface IWeixinApiService {
      */
     @POST("cgi-bin/qrcode/create")
     Call<WeixinQrCodeResponseDTO> createQrCode(@Query("access_token") String accessToken, @Body WeixinQrCodeRequestDTO weixinQrCodeRequestDTO);
+
+
+    /**
+     * 发送微信公众号模板消息
+     * 文档：https://mp.weixin.qq.com/debug/cgi-bin/readtmpl?t=tmplmsg/faq_tmpl
+     *
+     * @param accessToken              getToken 获取的 token 信息
+     * @param weixinTemplateMessageDTO 入参对象
+     * @return 应答结果
+     */
+    @POST("cgi-bin/message/template/send")
+    Call<Void> sendMessage(@Query("access_token") String accessToken, @Body WeixinTemplateMessageDTO weixinTemplateMessageDTO);
 
 }

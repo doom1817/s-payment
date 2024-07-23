@@ -13,11 +13,6 @@ import retrofit2.Call;
 import javax.annotation.Resource;
 import java.io.IOException;
 
-/**
- * @author Fuzhengwei bugstack.cn @小傅哥
- * @description
- * @create 2024-02-25 12:03
- */
 @Service
 public class LoginPort implements ILoginAdapter {
 
@@ -35,8 +30,9 @@ public class LoginPort implements ILoginAdapter {
         // 1. 获取 accessToken 【实际业务场景，按需处理下异常】
         String accessToken = weixinAccessToken.getIfPresent(appid);
         if (null == accessToken){
-            Call<WeixinTokenResponseDTO> call = weixinApiService.getToken("client_credential", "wx5a228ff69e28a91f", "0bea03aa1310bac050aae79dd8703928");
+            Call<WeixinTokenResponseDTO> call = weixinApiService.getToken("client_credential", appid, appSecret);
             WeixinTokenResponseDTO weixinTokenResponseDTO = call.execute().body();
+            assert weixinTokenResponseDTO != null;
             accessToken = weixinTokenResponseDTO.getAccess_token();
             weixinAccessToken.put(appid, accessToken);
         }
@@ -55,6 +51,7 @@ public class LoginPort implements ILoginAdapter {
 
         Call<WeixinQrCodeResponseDTO> qrCodeCall = weixinApiService.createQrCode(accessToken, request);
         WeixinQrCodeResponseDTO weixinQrCodeResponseDTO = qrCodeCall.execute().body();
+        assert weixinQrCodeResponseDTO != null;
         return weixinQrCodeResponseDTO.getTicket();
     }
 
