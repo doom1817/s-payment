@@ -56,7 +56,7 @@ public class AliPayTest {
         request.setReturnUrl(return_url);
 
         JSONObject bizContent = new JSONObject();
-        bizContent.put("out_trade_no", "daniel82AAAA000032333361X001");  // 我们自己生成的订单编号
+        bizContent.put("out_trade_no", "daniel82AAAA000032333361Y001");  // 我们自己生成的订单编号
         bizContent.put("total_amount", "0.01"); // 订单的总金额
         bizContent.put("subject", "测试商品");   // 支付的名称
         bizContent.put("product_code", "FAST_INSTANT_TRADE_PAY");  // 固定配置
@@ -80,12 +80,14 @@ public class AliPayTest {
      */
     @Test
     public void test_alipay_certificateExecute() throws AlipayApiException {
-        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+
         AlipayTradeQueryModel bizModel = new AlipayTradeQueryModel();
-        bizModel.setOutTradeNo("daniel82AAAA000032333361X03");
+        bizModel.setOutTradeNo("daniel82AAAA000032333361Y001");
+
+        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         request.setBizModel(bizModel);
 
-        String body = alipayClient.certificateExecute(request).getBody();
+        String body = alipayClient.execute(request).getBody();
         log.info("测试结果：{}", body);
     }
 

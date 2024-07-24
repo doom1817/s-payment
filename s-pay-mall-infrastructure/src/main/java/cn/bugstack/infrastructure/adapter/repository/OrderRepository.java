@@ -17,6 +17,7 @@ import com.google.common.eventbus.EventBus;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 订单仓储实现
@@ -97,6 +98,11 @@ public class OrderRepository implements IOrderRepository {
         PaySuccessMessageEvent.PaySuccessMessage paySuccessMessage = eventMessage.getData();
 
         eventBus.post(JSON.toJSONString(paySuccessMessage));
+    }
+
+    @Override
+    public List<String> queryNoPayNotifyOrder() {
+        return orderDao.queryNoPayNotifyOrder();
     }
 
 }

@@ -3,6 +3,8 @@ package cn.bugstack.domain.order.service;
 import cn.bugstack.domain.order.model.entity.PayOrderEntity;
 import cn.bugstack.domain.order.model.entity.ShopCartEntity;
 
+import java.util.List;
+
 /**
  * 订单服务
  */
@@ -21,5 +23,10 @@ public interface IOrderService {
      * @param orderId 订单ID
      */
     void changeOrderPaySuccess(String orderId);
+
+    /**
+     * 查询有效期内，未接收到支付回调的订单
+     */
+    List<String> queryNoPayNotifyOrder();
 
 }

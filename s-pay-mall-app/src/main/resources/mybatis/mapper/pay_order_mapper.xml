@@ -42,4 +42,11 @@
         limit 1
     </select>
 
+    <select id="queryNoPayNotifyOrder" resultType="java.lang.String">
+        SELECT order_id as orderId FROM pay_order
+        WHERE status = 'PAY_WAIT' AND NOW() >= order_time + INTERVAL 1 MINUTE
+        ORDER BY id ASC
+        LIMIT 10
+    </select>
+
 </mapper>

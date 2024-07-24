@@ -3,6 +3,8 @@ package cn.bugstack.infrastructure.dao;
 import cn.bugstack.infrastructure.dao.po.PayOrder;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface IOrderDao {
 
@@ -13,5 +15,7 @@ public interface IOrderDao {
     void updateOrderPayInfo(PayOrder order);
 
     void changeOrderPaySuccess(PayOrder order);
+
+    List<String> queryNoPayNotifyOrder();
 
 }
