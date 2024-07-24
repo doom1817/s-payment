@@ -4,6 +4,7 @@ import cn.bugstack.infrastructure.gateway.IWeixinApiService;
 import cn.bugstack.infrastructure.gateway.dto.WeixinTemplateMessageDTO;
 import cn.bugstack.infrastructure.gateway.dto.WeixinTokenResponseDTO;
 import com.alibaba.fastjson2.JSON;
+import io.reactivex.Single;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import retrofit2.Call;
+import retrofit2.Response;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -43,7 +45,7 @@ public class WeixinTest {
 
     private String accessToken = "82_yOsOOitB88NgmAjnVeKyDQ5aXG5DTpenHF4MuKVpI4N4P2zcg7RYpQFItyUADbEfVFUQn_NNmhXdY1VYNa70jKKUamAXtqGj2cO3xzVjzsxJIG19dYp2zg_oFUwRWWaAJAWBB";
 
-//    @Before
+    @Before
     public void before() throws IOException {
         Call<WeixinTokenResponseDTO> call = weixinApiService.getToken("client_credential", appid, appSecret);
         WeixinTokenResponseDTO weixinTokenResponseDTO = call.execute().body();
@@ -53,38 +55,18 @@ public class WeixinTest {
     }
 
     @Test
-    public void test_template_message() {
+    public void test_template_message() throws IOException {
         Map<String, Map<String, String>> data = new HashMap<>();
-        WeixinTemplateMessageDTO.put(data, WeixinTemplateMessageDTO.TemplateKey.REPO_NAME, "big-market");
-        WeixinTemplateMessageDTO.put(data, WeixinTemplateMessageDTO.TemplateKey.BRANCH_NAME, "240702-xfg-refactor");
-        WeixinTemplateMessageDTO.put(data, WeixinTemplateMessageDTO.TemplateKey.COMMIT_AUTHOR, "fuzhengwei");
-        WeixinTemplateMessageDTO.put(data, WeixinTemplateMessageDTO.TemplateKey.COMMIT_MESSAGE, "feat: 抽奖订单功能实现v1");
+        WeixinTemplateMessageDTO.put(data, WeixinTemplateMessageDTO.TemplateKey.USER, "xiaofuge");
 
-        WeixinTemplateMessageDTO templateMessageDTO = new WeixinTemplateMessageDTO("or0Ab6ivwmypESVp_bYuk92T6SvU", "l2HTkntHB71R4NQTW77UkcqvSOIFqE_bss1DAVQSybc");
+        WeixinTemplateMessageDTO templateMessageDTO = new WeixinTemplateMessageDTO("or0Ab6ivwmypESVp_bYuk92T6SvU", "RbEZ2jo47dQmF4A7_Ku7RsDy1x_5by6bk1Ox6rPCl4Y");
         templateMessageDTO.setUrl("https://gaga.plus");
         templateMessageDTO.setData(data);
 
         Call<Void> call = weixinApiService.sendMessage(accessToken, templateMessageDTO);
-        call.enqueue(new retrofit2.Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
-                if (response.isSuccessful()) {
-                    System.out.println("Message sent successfully!");
-                } else {
-                    System.out.println("Failed to send message: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        call.execute();
 
         log.info("请求参数:{}",JSON.toJSONString(templateMessageDTO));
-
-//        String url = String.format("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s", accessToken);
-//        sendPostRequest(url, JSON.toJSONString(templateMessageDTO));
     }
 
     private static void sendPostRequest(String urlString, String jsonBody) {

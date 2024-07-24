@@ -1,5 +1,6 @@
 package cn.bugstack.trigger.http;
 
+import cn.bugstack.domain.auth.service.ILoginService;
 import cn.bugstack.types.sdk.weixin.MessageTextEntity;
 import cn.bugstack.types.sdk.weixin.SignatureUtil;
 import cn.bugstack.types.sdk.weixin.XmlUtil;
@@ -26,6 +27,8 @@ public class WeixinPortalController {
     private String originalid;
     @Resource
     private Cache<String, String> openidToken;
+    @Resource
+    private ILoginService loginService;
 
     /**
      * 验签，硬编码 token b8b6 - 按需修改
@@ -70,8 +73,8 @@ public class WeixinPortalController {
 
             // 扫码登录【消息类型和事件】
             if ("event".equals(message.getMsgType()) && "SCAN".equals(message.getEvent())) {
-                // 实际的业务场景，可以生成 jwt 的 token 让前端存储
-                openidToken.put(message.getTicket(), openid);
+                // 保存登录状态
+                loginService.saveLoginState(message.getTicket(), openid);
                 return buildMessageTextEntity(openid, "登录成功");
             }
 

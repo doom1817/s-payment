@@ -7,8 +7,10 @@ import java.io.IOException;
  * @description 登录适配器接口
  * @create 2024-02-25 12:03
  */
-public interface ILoginAdapter {
+public interface ILoginPort {
 
     String createQrCodeTicket() throws IOException;
+
+    void sendLoginTempleteMessage(String openid) throws IOException;
 
 }

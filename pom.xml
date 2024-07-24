@@ -138,7 +138,7 @@
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>1.4.10</version>
+                <version>1.4.20</version>
             </dependency>
             <!-- 支付宝沙箱支付对接文档：https://opendocs.alipay.com/common/02kkv7 -->
             <dependency>

@@ -42,10 +42,7 @@ public class WeixinTemplateMessageDTO {
 
 
     public enum TemplateKey {
-        REPO_NAME("repo_name","项目名称"),
-        BRANCH_NAME("branch_name","分支名称"),
-        COMMIT_AUTHOR("commit_author","提交者"),
-        COMMIT_MESSAGE("commit_message","提交信息"),
+        USER("user","用户ID")
         ;
 
         private String code;
