@@ -6,6 +6,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -138,6 +139,7 @@ public class XmlUtil {
     public static <T> T xmlToBean(String resultXml, Class clazz) {
         // XStream对象设置默认安全防护，同时设置允许的类
         XStream stream = new XStream(new DomDriver());
+        stream.addPermission(AnyTypePermission.ANY);
         XStream.setupDefaultSecurity(stream);
         stream.allowTypes(new Class[]{clazz});
         stream.processAnnotations(new Class[]{clazz});
