@@ -29,4 +29,11 @@ public interface IOrderService {
      */
     List<String> queryNoPayNotifyOrder();
 
+    /**
+     * 查询超时15分钟，未支付订单
+     */
+    List<String> queryTimeoutCloseOrderList();
+
+    boolean changeOrderClose(String orderId);
+
 }

@@ -105,4 +105,14 @@ public class OrderRepository implements IOrderRepository {
         return orderDao.queryNoPayNotifyOrder();
     }
 
+    @Override
+    public List<String> queryTimeoutCloseOrderList() {
+        return orderDao.queryTimeoutCloseOrderList();
+    }
+
+    @Override
+    public boolean changeOrderClose(String orderId) {
+        return orderDao.changeOrderClose(orderId);
+    }
+
 }

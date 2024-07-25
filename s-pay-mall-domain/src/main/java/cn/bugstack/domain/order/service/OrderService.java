@@ -73,4 +73,14 @@ public class OrderService extends AbstractOrderService {
         return repository.queryNoPayNotifyOrder();
     }
 
+    @Override
+    public List<String> queryTimeoutCloseOrderList() {
+        return repository.queryTimeoutCloseOrderList();
+    }
+
+    @Override
+    public boolean changeOrderClose(String orderId) {
+        return repository.changeOrderClose(orderId);
+    }
+
 }

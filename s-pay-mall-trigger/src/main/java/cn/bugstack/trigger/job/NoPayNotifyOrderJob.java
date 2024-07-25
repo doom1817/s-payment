@@ -29,27 +29,28 @@ public class NoPayNotifyOrderJob {
 
     @Scheduled(cron = "0/3 * * * * ?")
     public void exec() {
-        List<String> orderIds = orderService.queryNoPayNotifyOrder();
-        if (null == orderIds || orderIds.isEmpty()) return;
+        try {
+            List<String> orderIds = orderService.queryNoPayNotifyOrder();
+            if (null == orderIds || orderIds.isEmpty()) return;
 
-        for (String orderId : orderIds) {
-            AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
-            AlipayTradeQueryModel bizModel = new AlipayTradeQueryModel();
-            bizModel.setOutTradeNo(orderId);
-            request.setBizModel(bizModel);
+            for (String orderId : orderIds) {
+                AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+                AlipayTradeQueryModel bizModel = new AlipayTradeQueryModel();
+                bizModel.setOutTradeNo(orderId);
+                request.setBizModel(bizModel);
 
-            try {
+
                 AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(request);
                 String code = alipayTradeQueryResponse.getCode();
                 // 判断状态码
                 if ("10000".equals(code)) {
                     orderService.changeOrderPaySuccess(orderId);
                 }
-            } catch (AlipayApiException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
+            }
+        } catch (Exception e) {
+            log.error("检测未接收到或未正确处理的支付回调通知失败", e);
+        }
     }
 
 }

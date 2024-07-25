@@ -42,4 +42,8 @@ public interface IOrderRepository {
 
     List<String> queryNoPayNotifyOrder();
 
+    List<String> queryTimeoutCloseOrderList();
+
+    boolean changeOrderClose(String orderId);
+
 }
