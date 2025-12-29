@@ -2,11 +2,6 @@ package cn.bugstack.types.sdk.weixin;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-/**
- * @author Fuzhengwei bugstack.cn @小傅哥
- * @description 消息实体
- * @create 2024-02-25 12:11
- */
 @XStreamAlias("xml")
 public class MessageTextEntity {
 
@@ -28,8 +23,11 @@ public class MessageTextEntity {
     @XStreamAlias("EventKey")
     private String eventKey;
 
-    @XStreamAlias("MsgID")
+    @XStreamAlias("MsgId")
     private String msgId;
+
+    @XStreamAlias("MsgID")
+    private String msgID;
 
     @XStreamAlias("Status")
     private String status;
@@ -119,5 +117,13 @@ public class MessageTextEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getMsgID() {
+        return msgID;
+    }
+
+    public void setMsgID(String msgID) {
+        this.msgID = msgID;
     }
 }
