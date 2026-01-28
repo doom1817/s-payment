@@ -1,6 +1,7 @@
 package cn.bugstack.domain.auth.service;
 
 import cn.bugstack.domain.auth.adapter.port.ILoginPort;
+import cn.bugstack.domain.auth.model.valobj.LoginInfoVO;
 import cn.bugstack.types.exception.AppException;
 import com.google.common.cache.Cache;
 import org.springframework.stereotype.Service;
@@ -8,16 +9,13 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 
-/**
- * @author Fuzhengwei bugstack.cn @小傅哥
- * @description 微信服务
- * @create 2024-02-25 12:00
- */
 @Service
 public class WeixinLoginService implements ILoginService {
 
     @Resource
     private ILoginPort loginPort;
+    @Resource
+    private ITemplateMessageService templateMessageService;
     @Resource
     private Cache<String, String> openidToken;
 
@@ -38,10 +36,7 @@ public class WeixinLoginService implements ILoginService {
 
     @Override
     public void saveLoginState(String ticket, String openid) throws IOException {
-        // 实际的业务场景，openid 可以生成 jwt 的 token 让前端存储
         openidToken.put(ticket, openid);
-        // 发送登录成功模板消息
-        loginPort.sendLoginTempleteMessage(openid);
     }
 
 }

@@ -42,7 +42,10 @@ public class WeixinTemplateMessageDTO {
 
 
     public enum TemplateKey {
-        USER("user","用户ID")
+        USER("user","用户ID"),
+        IP("ip","IP地址"),
+        REGION("region","地区"),
+        LOGIN_TIME("login_time","登录时间")
         ;
 
         private String code;

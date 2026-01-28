@@ -1,5 +1,5 @@
 server:
-  port: 8092
+  port: 8080
   tomcat:
     max-connections: 20
     threads:
@@ -11,7 +11,7 @@ spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://127.0.0.1:3306/s-pay-mall?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+    url: jdbc:mysql://localhost:3306/s-pay-mall?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialSize: 5
     minIdle: 5
@@ -28,14 +28,14 @@ spring:
 
 mybatis:
   mapper-locations: classpath:/mybatis/mapper/*.xml
-  config-location:  classpath:/mybatis/config/mybatis-config.xml
+  config-location: classpath:/mybatis/config/mybatis-config.xml
 
 # Redis
 redis:
   sdk:
     config:
-      host: 192.168.1.108
-      port: 16379
+      host: localhost
+      port: 6379
       pool-size: 10
       min-idle-size: 5
       idle-timeout: 30000
@@ -48,19 +48,21 @@ redis:
 # 支付宝支付 - 沙箱 https://opendocs.alipay.com/common/02kkv7
 alipay:
   enabled: true
-  app_id: 9021000132689924
-  merchant_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJN3l3DV6I2rGzMJo+fUjuyNWlneX6u2XPzLinviCtrmy2hLCipx0H37PzPVQbRWodiKThBaIhDbGK15mx0/UA+mLJOpK8fqAKXiuSgZ8J7zl4Gox7rySgHI0TA9aKNwMaeG2UovGUZiIL66Lx9u+Tn+X/hNFqrsEiDjHB80Z1AofRtboaI+4tCWq+/jsNgfJdOJf69qyqLXL1BtAo6UyXZpkGdZshDjO87V85Bmjl7ruVjIsmgtRHDO86HHnLHmZC3fZMG1eteI58MZWS8q5NoOQnkfw5l9m2+/rrAjpIqDIPxt6I289l/fVIG5CUX3N7+ws76YjBmN+LMy92/prFAgMBAAECggEAaT5NQYzVhy4FwaRziZ5aRBtyEncLH8aADmO89ZuUQOJZq5wWRorab2GbCeNuEQSqoUBfBeBmO+fe1tkKnyQs9LUW87SjO0P7yDf2P4Z/zwTXFVF3kp4A/3UmlwEImjYbgUAA/FIF7IZxcqcm8WMu2hF4PQVIAgVLSK2OaG4JClDoXE/R/HZrSv/AU3cMkuFsMHewuuDSHWYNdZb1Mqg6TrFt0+ryYciybkpfHZPvB6zqZG+c0gStZ6tTzviGi0T26zlHp3EdsLJ5Mmfw0z1TY2PDX/iICO/mCRJt1yT2E2h82QgFPszjS9wQ8OuxsT0eeUYA+4LA35juU4+GbpOhgQKBgQDI5TaVDzfLW5K0mw/1+6ZVq9Xgrg0p6kBUGyVfw2Ne47UCWsT1Q3eQTzMIhM3KPVeKgHPF4JT3tv7sCjbOspjcg9hw+zxAq/2jO1JZHffOd1id8rj7NmtLB0q9BQPNmtllmjYaJgPW45KY09vBtKWLxoVYp9qlxZIMIHZO58gZMQKBgQCu2sW9tMdoP2dvqzD5+vXN9lV/uUgCd+6dC4D3GIBAB3aRvnqZuGo3i7DBwdL2VwsTSs54CTlppQYKJHomPkhus68J69rWLI4cDJUblNHvNCtVHBDp8bnha7MfG99ppuDq/RK3X+jRTOqjk5uuVfBHR8GSBEwFGuvVdjfMslK11QKBgGl9Gq0owYZx/lYBul7TFmOUCImjO1xQGhlP688ePRa9gPXMjfGvzJ+lRsnpWlog3c/nZWN5ax+sIq31KxRcabIZNVUWR2w6I8RLyRDskIwE1S6THpki2TIbkR4x/O5AqnkUgeY3Ifr7oqXHUXSkk+0SgECuWzyCww7FGPqT8NlxAoGAVSOzWy72VZ1h2S7rNx1qqLIEaZ+nH4SUTCW40xg8AnFf25F7EvSHy6oaFA4zkb1KaEdph2s+aGFxMmkWjR6QmE6nsVYFhXnGbIP36qkpG6c0Xkm/Npp8HvYZDtG8lC4soF8/yMhLjfY83g9Wo6m2yI55A4dSGL5GDPd2Lha6TU0CgYEAlUwdoWap7Ws1M83pQyQaGHoDljRxrlk0He2OJ8icKLhDnTCJSdg4v+79W9+zLWrfcLtkQlNJRop1RZkns7RAWJq+N/9SppbFNhSxy5w3YzjTsSTKyLBPtFKpyqo9o5MzUelZFd6KWRbCY/ThEhQb+WCYXjP0U5Vx97WjWvxp6/s=
-  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmgtSO8GV5YSl01AWgGWe2xKJ9oDfjzf5vNtJS6SSc5klmGMToVdsi3gmLipN04yzmnEEchmFxsuxKLLhdQuC4d9V74I6CVIZPPHtaSuz/T3EZTHtQIGwF705Yrq1bd63l70iTfkrS0Ry9f72SDZEBBLllXfFo+otChwRRN+UXDd8X/bplV3/cbRncV5yWRnHHCgzQiwpH3ilS+sOmMfdfac0bi/xB7HIU6nUX04VCjAR7itSr0OmU8HC6p20Ubvjs45R6VuR7FMI+OahCd3LDe/ayelScfQ4zavruk4HGx3TDH4hLDA3N+xid5Cu5erLDPHtFXfnQHI4n/opQaXo5wIDAQAB
-  notify_url: http://xfg-studio.natapp1.cc/api/v1/alipay/pay_notify
+  app_id: 9021000159653100
+  merchant_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkRWSLzad8VoSHw4C0AD4IyqyqiuV6APiBR8E3XPlt3xYfqLZvHyxKroa2io1VxtSXutLZYg6+kAbo9CZI/OuHw0ZsHMj3Xl73WWmiZ0cM5kgiirf0mKwk45kB/I6QdRZidulhQCLaHMnPJipch1Ni0Hf6Qu/gl7+fNxebE3od/TC5Sv8jo2LrJJZVce2PCiEvoczwvTHht5WJ7xs+UzAxCZyOnwtb2bagA+hp5Wmhx7uMXz+W+T6t3hp69jRDlYA+0Lw1ChNS2nQNkeoCbhAMF5qSUjiKYsIcqImF7zBfn/uVapRJmvWIL0LHA5N2CrEjYqBr32RYtK+9mEpvlQxtAgMBAAECggEANO+DsiWIhmHe/Vz72YWGeBDPyXlO75zmd8qmse+NFWHhYDxe5bo27K4HDUXiu7SCB48VqSWXOMNy5pjeyYBvaeV8iRRRkp1fnve6ObJsS/TdY/wtwW19c7nAMcqwKk8A8qP9GvCvCnhidBWJax3UujARqZzubgKYpnb7bWa+YHEVmjNIwXzkTnC1RhdqYsykpAOB/XN/See/W6X3jXraxkrNtAhJqZgMil/fLYf4JG1IU8ywJ/kGcvsfOHE4EVb/h55v7yZ+sQz6oqktxEtIhs/45RdTEPDtCr/Rfkcf3nN41bbsFA3EEwt5Ti38/jCI2G7h7e+92fpDM5sYil6vBQKBgQDOFsIf16SsIMv6lGA/JImtiNyu0qCRYrBm8pXZCCK/kEVmXLxu1WHd7NFTk6wbBiZqgidPslbLl7QkQtU4KrHsJe3v7nGvQe2tfYjruc0C1PwJJ0uqGsGjEVaD6ZbOithBVW2jy/ufBYeW/6fbcaGFJM9wogfo+9GG+mBf/sbDpwKBgQDMDfvJjZoz4hrKcAbNYnPaFa66iaNmbY9kLURYm3lTPjWWOcO0XsjwidVC3UoAskfWJfP1aaHyjA2w/CH/LncHjLv3FTGct3tz7ssbPKb1BN50G1ixE6+L4KdFgOTfMygB5koulCu7HIKZLQ527uZ/opkfOFwrZhk4YITseLHBywKBgQDL3M1o7Es0DjlZBf9zVrRumi0bLrWxO3ueSqeaiia9cnyENoYb6S6ndkTXNQQRs3K690bl2ldrjAShvg7nQazBGgAV0LxajpALh1uzOxemjoNGlr2NZmxX36XCVYZdiBFGB7iuR/D/LFwlLX6hX/VUHMaq90111ew9Zl2BeCisjwKBgD/Js0cre+PyL5vO72FvAHZRRuDLPAg+AZA4UmA8oe2yyb+faR1OcBQ5kjAnywVyteAs1xmFnvmabIFCIEKMPOtgRDYWKv8poG76XAW0rSB1GDFFhzE7zSm13bRteZ6IeF43pkLvUMhaPj0yB46IWgfWRXWsAawTa5jjG0ps5GyHAoGAGaZsv5HsstW6RpEWIi/qTeBTQ6cG0FegtrBfrmXbW6VWZEoy2WJrDNNyLaT9uoQsmDE8YJbhoOVsamKet/h2Xv5cwfhQrkuzFc+ffhJrQzfHv6zxRKXlQl6jPoWTEpEqHMP7yCefryZ3VzHGFFWIxfILicTiJxCpLfwdI1Qm7wg=
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr+0NfxRKO0ilwKYj/eDuoibVq2aZE0DOPkAdsxw50Up6wZ7hT4P7ohhzTtizVdS3LjbSmMT+782pnp0XQJpPHe0I4BSaSdRce+pKSVmzi4DhnUHFOtfVUR7VkL0U4P8lETnyf/9KbEryH5lZOTwF1olvJXj4KpFIb+54KnhcES2O2QWUNp/gCgqQb8+AihIsHz5xItlWjp0pu4VA36LCAIyRPmtZnIQKoKaKaMoyZfhUSI0xJdLf68I5HcKNer/fasbOuK51zZmXHoD7beGJ4lWUk0Ph25ZJkGpkrsRAPGSysLoXtuAMx5e3r/KNf6RuO56ZgqHx9BMhgs7jReJ48QIDAQAB
+  notify_url: http://doom15.nat100.top/api/v1/alipay/pay_notify
   return_url: https://gaga.plus
   gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
 
 weixin:
   config:
-    originalid: gh_e067c267e056
-    app-id: wx5a228ff69e28a91f
-    app-secret: 0bea03aa1310bac050aae79dd8703928
-    template_id: RbEZ2jo47dQmF4A7_Ku7RsDy1x_5by6bk1Ox6rPCl4Y
+    originalid: gh_ff25205ba449
+    token: 3A3a
+    app-id: wx2d068dc8d3b3b591
+    app-secret: e9c6939d56a65e2b65c9c2407267e70e
+    #    template_id: of8No7dMlLQjIhNwi9kyYYw4c0fszoqLVXMiROZGhRw #登录成功
+    template_id_2: -yYiA2HCKq5t1f_WIpyqCuNqaRQkl9JfweT4h5fqcsY #显示登录IP地址、地区、登录时间
 
 # 日志
 logging:
