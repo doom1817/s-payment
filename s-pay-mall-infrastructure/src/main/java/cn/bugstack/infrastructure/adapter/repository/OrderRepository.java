@@ -91,6 +91,9 @@ public class OrderRepository implements IOrderRepository {
         order.setOrderId(payOrderEntity.getOrderId());
         order.setPayUrl(payOrderEntity.getPayUrl());
         order.setStatus(payOrderEntity.getOrderStatus().getCode());
+        order.setMarketType(payOrderEntity.getMarketType());
+        order.setMarketDeductionAmount(payOrderEntity.getMarketDeductionAmount());
+        order.setPayAmount(payOrderEntity.getPayAmount());
         orderDao.updateOrderPayInfo(order);
     }
 
