@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * 支付单实体对象
  */
@@ -23,15 +25,11 @@ public class PayOrderEntity {
     private String payUrl;
     /** 订单状态；0-创建完成、1-等待支付、2-支付成功、3-交易完成、4-订单关单 */
     private OrderStatusVO orderStatus;
-
-    @Override
-    public String toString() {
-        return "PayOrderEntity{" +
-                "userId='" + userId + '\'' +
-                ", orderId='" + orderId + '\'' +
-                ", payUrl='" + payUrl + '\'' +
-                ", orderStatus=" + orderStatus +
-                '}';
-    }
+    /**  营销类型：0无营销，1拼团营销 */
+    private Integer marketType;
+    /** 营销金额：优惠金额 */
+    private BigDecimal marketDeductionAmount;
+    /** 支付金额 */
+    private BigDecimal payAmount;
 
 }

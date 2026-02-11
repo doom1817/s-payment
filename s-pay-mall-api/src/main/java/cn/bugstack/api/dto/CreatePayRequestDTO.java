@@ -9,5 +9,10 @@ public class CreatePayRequestDTO {
     private String userId;
     // 产品编号
     private String productId;
-
+    // 拼单组队ID
+    private String teamId;
+    // 活动ID
+    private Long activityId;
+    // 营销类型：0无营销，1拼团营销
+    private Integer marketType = 0;
 }

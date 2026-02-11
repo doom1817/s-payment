@@ -17,7 +17,10 @@ import com.google.common.eventbus.EventBus;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
+import cn.bugstack.domain.order.model.valobj.MarketTypeVO;
+
 
 /**
  * 订单仓储实现
@@ -52,6 +55,9 @@ public class OrderRepository implements IOrderRepository {
                 .orderTime(order.getOrderTime())
                 .totalAmount(order.getTotalAmount())
                 .payUrl(order.getPayUrl())
+                .marketType(order.getMarketType())
+                .marketDeductionAmount(order.getMarketDeductionAmount())
+                .payAmount(order.getPayAmount())
                 .build();
     }
 
@@ -69,7 +75,9 @@ public class OrderRepository implements IOrderRepository {
         order.setOrderTime(orderEntity.getOrderTime());
         order.setTotalAmount(productEntity.getPrice());
         order.setStatus(orderEntity.getOrderStatus().getCode());
-
+        order.setMarketType(MarketTypeVO.NO_MARKET.getCode());
+        order.setMarketDeductionAmount(BigDecimal.ZERO);
+        order.setPayAmount(productEntity.getPrice());
         orderDao.insert(order);
 
         // 存入缓存；缓存key聚合到对象中提供

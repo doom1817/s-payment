@@ -7,6 +7,19 @@ server:
       min-spare: 10
     accept-count: 10
 
+#应用配置
+app:
+  config:
+    api-version: v1
+    #跨域: 开发阶段设置不限制
+    cross-origin: '*'
+    #sc渠道
+    group-buy-market:
+      api-url: http://localhost:8091
+      notify-url: http://localhost:8091/api/v1/test/group_buy_notify
+      source: s01
+      channel: c01
+
 spring:
   datasource:
     username: root
