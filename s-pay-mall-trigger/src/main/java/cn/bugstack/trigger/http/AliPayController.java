@@ -2,11 +2,13 @@ package cn.bugstack.trigger.http;
 
 import cn.bugstack.api.IPayService;
 import cn.bugstack.api.dto.CreatePayRequestDTO;
+import cn.bugstack.api.dto.NotifyRequestDTO;
 import cn.bugstack.api.response.Response;
 import cn.bugstack.domain.order.model.entity.PayOrderEntity;
 import cn.bugstack.domain.order.model.entity.ShopCartEntity;
 import cn.bugstack.domain.order.service.IOrderService;
 import cn.bugstack.types.enums.ResponseCode;
+import com.alibaba.fastjson2.JSON;
 import com.alipay.api.internal.util.AlipaySignature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +61,22 @@ public class AliPayController implements IPayService {
         }
     }
 
+    /**
+     * http://localhost:8091/api/v1/alipay/group_buy_notify
+     */
+    @RequestMapping(value = "group_buy_notify", method = RequestMethod.POST)
+    @Override
+    public String groupBuyNotify(@RequestBody NotifyRequestDTO request) {
+        log.info("拼团回调，组队完成，结算开始{}", JSON.toJSONString( request));
+        try{
+            orderService.changeOrderMarketSettlement(request.getOutTradeNoList());
+            return "success";
+        } catch (Exception e) {
+            log.error("拼团回调，组队完成，结算失败{}", JSON.toJSONString( request), e);
+            return "error";
+        }
+    }
+
     @RequestMapping(value = "pay_notify", method = RequestMethod.POST)
     public String payNotify(HttpServletRequest request) {
         try {
@@ -89,7 +108,7 @@ public class AliPayController implements IPayService {
                     log.info("支付回调，买家付款金额: {}", params.get("buyer_pay_amount"));
                     log.info("支付回调，支付回调，更新订单 {}", tradeNo);
                     // 更新订单未已支付
-                    orderService.changeOrderPaySuccess(tradeNo);
+                    orderService.changeOrderPaySuccess(tradeNo,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(params.get("gmt_paymentTime")));
                 }
             }
             return "success";

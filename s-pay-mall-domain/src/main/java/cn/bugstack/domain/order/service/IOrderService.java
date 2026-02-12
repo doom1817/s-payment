@@ -2,7 +2,9 @@ package cn.bugstack.domain.order.service;
 
 import cn.bugstack.domain.order.model.entity.PayOrderEntity;
 import cn.bugstack.domain.order.model.entity.ShopCartEntity;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public interface IOrderService {
      * 更新订单状态
      * @param orderId 订单ID
      */
-    void changeOrderPaySuccess(String orderId);
+    void changeOrderPaySuccess(String orderId, Date payTime);
 
     /**
      * 查询有效期内，未接收到支付回调的订单
@@ -33,7 +35,12 @@ public interface IOrderService {
      * 查询超时15分钟，未支付订单
      */
     List<String> queryTimeoutCloseOrderList();
-
+    /**
+     * 关闭订单
+     * @param orderId 订单ID
+     * @return 是否成功
+     */
     boolean changeOrderClose(String orderId);
 
+    void changeOrderMarketSettlement(List<String> outTradeNoList);
 }

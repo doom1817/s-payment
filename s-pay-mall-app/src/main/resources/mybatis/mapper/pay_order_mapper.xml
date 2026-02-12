@@ -42,9 +42,21 @@
         update pay_order set status = 'CLOSE', pay_time = now(), update_time = now()
         where order_id = #{orderId}
     </update>
+    <update id="changeOrderDealDone" parameterType="java.util.List">
+            update pay_order set status = 'DEAL_DONE', update_time = now()
+            where order_id = #{orderId}
+    </update>
+    <update id="changeOrderMarketSettlement" parameterType="java.util.List">
+        update pay_order set status = 'MARKET', update_time = now()
+        where order_id in
+        <foreach item="orderId" collection="outTradeNoList" separator="," close=")" open="(" index="index">
+            #{orderId}
+        </foreach>
+        />
+    </update>
 
     <select id="queryUnPayOrder" parameterType="cn.bugstack.infrastructure.dao.po.PayOrder" resultMap="dataMap">
-        select product_id, product_name, order_id, order_time, total_amount, status, pay_url, market_type
+        select product_id, product_name, order_id, order_time, total_amount, status, pay_url, market_type, market_deduction_amount, pay_amount
         from pay_order
         where user_id = #{userId} and product_id = #{productId}
         order by id desc
@@ -59,12 +71,16 @@
     </select>
 
     <select id="queryTimeoutCloseOrderList" resultType="java.lang.String">
-        SELECT order_id as orderId FROM openai_order
-        WHERE status = 'PAY_WAIT' AND NOW() >= order_time + INTERVAL 30 MINUTE
+        SELECT order_id as orderId FROM pay_order
+        WHERE status = 'PAY_WAIT' AND NOW() >= order_time + INTERVAL 1 MINUTE
         ORDER BY id ASC
-        LIMIT 50
+        LIMIT 10
     </select>
-
+    <select id="queryOrderByOrderId" resultType="cn.bugstack.infrastructure.dao.po.PayOrder">
+        select user_id ,product_id, product_name, order_id, order_time, total_amount, status, pay_url, market_type, market_deduction_amount, pay_amount
+        from pay_order
+        where order_id = #{orderId}
+    </select>
 
 
 </mapper>

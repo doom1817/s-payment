@@ -4,6 +4,7 @@ import cn.bugstack.domain.order.adapter.port.IProductPort;
 import cn.bugstack.domain.order.adapter.repository.IOrderRepository;
 import cn.bugstack.domain.order.model.aggregate.CreateOrderAggregate;
 import cn.bugstack.domain.order.model.entity.MarketPayDiscountEntity;
+import cn.bugstack.domain.order.model.entity.OrderEntity;
 import cn.bugstack.domain.order.model.entity.PayOrderEntity;
 import cn.bugstack.domain.order.model.valobj.MarketTypeVO;
 import cn.bugstack.domain.order.model.valobj.OrderStatusVO;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -83,8 +85,16 @@ public class OrderService extends AbstractOrderService {
     }
 
     @Override
-    public void changeOrderPaySuccess(String orderId) {
-        repository.changeOrderPaySuccess(orderId);
+    public void changeOrderPaySuccess(String orderId, Date payTime) {
+        OrderEntity orderEntity=repository.queryOrderByOrderId(orderId);
+        if (null == orderEntity) return;
+        if(MarketTypeVO.GROUP_BUY_MARKET.getCode().equals(orderEntity.getMarketType())){
+            repository.changeMarketOrderPaySuccess(orderId);
+            productPort.settlementMarketPayOrder(orderEntity.getUserId(),orderId,payTime);
+        }else {
+            repository.changeOrderPaySuccess(orderId,payTime);
+
+        }
     }
 
     @Override
@@ -100,6 +110,12 @@ public class OrderService extends AbstractOrderService {
     @Override
     public boolean changeOrderClose(String orderId) {
         return repository.changeOrderClose(orderId);
+    }
+
+    @Override
+    public void changeOrderMarketSettlement(List<String> outTradeNoList) {
+        repository.changeOrderMarketSettlement(outTradeNoList);
+
     }
 
 }

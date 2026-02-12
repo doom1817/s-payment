@@ -5,17 +5,17 @@ import cn.bugstack.domain.order.model.entity.MarketPayDiscountEntity;
 import cn.bugstack.domain.order.model.entity.ProductEntity;
 import cn.bugstack.infrastructure.gateway.IGroupBuyMarketService;
 import cn.bugstack.infrastructure.gateway.ProductRPC;
-import cn.bugstack.infrastructure.gateway.dto.LockMarketPayOrderRequestDTO;
-import cn.bugstack.infrastructure.gateway.dto.LockMarketPayOrderResponseDTO;
-import cn.bugstack.infrastructure.gateway.dto.ProductDTO;
+import cn.bugstack.infrastructure.gateway.dto.*;
 import cn.bugstack.infrastructure.gateway.response.Response;
 import cn.bugstack.types.exception.AppException;
+import com.alibaba.fastjson2.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
 
-import javax.annotation.Resource;
-
+import java.util.Date;
+@Slf4j
 @Component
 public class ProductPort implements IProductPort {
 
@@ -73,7 +73,29 @@ public class ProductPort implements IProductPort {
                     .build();
         }
         catch (Exception e){
+            log.info("锁定营销支付订单失败 userId:{} orderId:{}", userId, orderId);
              return null;
+        }
+    }
+
+    @Override
+    public void settlementMarketPayOrder(String userId, String orderId, Date orderTime) {
+        SettlementMarketPayOrderRequestDTO requestDTO =new SettlementMarketPayOrderRequestDTO();
+        requestDTO.setSource(source);
+        requestDTO.setChannel(channel);
+        requestDTO.setUserId(userId);
+        requestDTO.setOutTradeNo(orderId);
+        requestDTO.setOutTradeTime(orderTime);
+        try{
+            Call<Response<SettlementMarketPayOrderResponseDTO>> responseCall = groupBuyMarketService.settlementMarketPayOrder(requestDTO);
+            Response<SettlementMarketPayOrderResponseDTO> responseDTO = responseCall.execute().body();
+            log.info("发起结算请求{}, requestDTO {}, responseCall {}", userId, JSON.toJSONString(requestDTO), JSON.toJSONString(responseDTO));
+            if (null == responseDTO) return;
+            if (!"0000".equals(responseDTO.getCode())){
+                log.info("发起结算请求失败 userId:{} orderId:{}", userId, orderId);
+            }
+        }catch (Exception e){
+            log.error("发起结算请求失败 userId:{}", userId, e);
         }
     }
 

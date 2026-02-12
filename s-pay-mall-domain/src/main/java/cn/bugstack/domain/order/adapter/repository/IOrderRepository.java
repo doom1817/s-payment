@@ -5,6 +5,7 @@ import cn.bugstack.domain.order.model.entity.OrderEntity;
 import cn.bugstack.domain.order.model.entity.PayOrderEntity;
 import cn.bugstack.domain.order.model.entity.ShopCartEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public interface IOrderRepository {
      * 订单支付成功
      * @param orderId 订单ID
      */
-    void changeOrderPaySuccess(String orderId);
+    void changeOrderPaySuccess(String orderId, Date orderTime);
 
     List<String> queryNoPayNotifyOrder();
 
@@ -46,4 +47,9 @@ public interface IOrderRepository {
 
     boolean changeOrderClose(String orderId);
 
+    OrderEntity queryOrderByOrderId(String orderId);
+
+    void changeMarketOrderPaySuccess(String orderId);
+
+    void changeOrderMarketSettlement(List<String> outTradeNoList);
 }

@@ -1,0 +1,50 @@
+package cn.bugstack.infrastructure.gateway.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+/**
+ * Created with IntelliJ IDEA.
+ *
+ * @Author: doom
+ * @Date: 2026/02/07/16:06
+ * @Description:
+ */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class SettlementMarketPayOrderResponseDTO {
+    /*
+     * 渠道
+     */
+    private String source;
+    /*
+     * 来源
+     */
+    private String channel;
+    /*
+     * 用户ID
+     */
+    private String userId;
+    /*
+     * 组团ID
+     */
+    private String teamId;
+    /*
+     * 活动ID
+     */
+    private Long activityId;
+    /*
+     * 外部交易单号
+     */
+    private String outTradeNo;
+    /*
+     * 外部交易时间
+     */
+    private Date outTradeTime;
+}

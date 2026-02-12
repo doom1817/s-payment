@@ -24,7 +24,7 @@ public class OrderServiceTest {
     @Test
     public void test_createOrder() throws Exception {
         ShopCartEntity shopCartEntity = ShopCartEntity.builder()
-                .userId("xiaofuge11")
+                .userId("xiaofuge20")
                 .productId("9890001")
                 .teamId(null)
                 .activityId(100123L)

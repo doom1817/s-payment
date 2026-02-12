@@ -3,6 +3,8 @@ package cn.bugstack.domain.order.adapter.port;
 import cn.bugstack.domain.order.model.entity.MarketPayDiscountEntity;
 import cn.bugstack.domain.order.model.entity.ProductEntity;
 
+import java.util.Date;
+
 public interface IProductPort {
 
     /**
@@ -25,4 +27,12 @@ public interface IProductPort {
      */
     MarketPayDiscountEntity lockMarketPayOrder(String userId, String teamId, Long activityId, String productId, String orderId);
 
+    /**
+     * 结算营销支付订单
+     *
+     * @param userId    用户ID
+     * @param orderId   订单ID
+     * @param orderTime
+     */
+    void settlementMarketPayOrder(String userId, String orderId, Date orderTime);
 }

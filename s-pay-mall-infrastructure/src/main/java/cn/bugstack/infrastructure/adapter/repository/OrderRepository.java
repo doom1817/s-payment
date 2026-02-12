@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import cn.bugstack.domain.order.model.valobj.MarketTypeVO;
 
@@ -98,7 +99,7 @@ public class OrderRepository implements IOrderRepository {
     }
 
     @Override
-    public void changeOrderPaySuccess(String orderId) {
+    public void changeOrderPaySuccess(String orderId, Date orderTime) {
         PayOrder order = new PayOrder();
         order.setOrderId(orderId);
         order.setStatus(OrderStatusVO.PAY_SUCCESS.getCode());
@@ -124,6 +125,47 @@ public class OrderRepository implements IOrderRepository {
     @Override
     public boolean changeOrderClose(String orderId) {
         return orderDao.changeOrderClose(orderId);
+    }
+
+    @Override
+    public OrderEntity queryOrderByOrderId(String orderId) {
+        PayOrder order =orderDao.queryOrderByOrderId(orderId);
+        if (null == order) return null;
+
+        return OrderEntity.builder()
+                .userId(order.getUserId())
+                .productId(order.getProductId())
+                .productName(order.getProductName())
+                .orderId(order.getOrderId())
+                .orderTime(order.getOrderTime())
+                .totalAmount(order.getTotalAmount())
+                .payUrl(order.getPayUrl())
+                .marketType(order.getMarketType())
+                .marketDeductionAmount(order.getMarketDeductionAmount())
+                .payAmount(order.getPayAmount())
+                .build();
+    }
+
+    @Override
+    public void changeMarketOrderPaySuccess(String orderId) {
+        PayOrder order = new PayOrder();
+        order.setOrderId(orderId);
+        order.setStatus(OrderStatusVO.PAY_SUCCESS.getCode());
+        orderDao.changeOrderPaySuccess(order);
+
+    }
+
+    @Override
+    public void changeOrderMarketSettlement(List<String> outTradeNoList) {
+        orderDao.changeOrderMarketSettlement(outTradeNoList);
+        outTradeNoList.forEach(outTradeNo -> {
+            // 发送MQ消息
+            BaseEvent.EventMessage<PaySuccessMessageEvent.PaySuccessMessage> eventMessage =
+                    paySuccessMessageEvent.buildEventMessage(PaySuccessMessageEvent.PaySuccessMessage.builder().tradeNo(outTradeNo).build());
+            PaySuccessMessageEvent.PaySuccessMessage paySuccessMessage = eventMessage.getData();
+
+            eventBus.post(JSON.toJSONString(paySuccessMessage));
+        });
     }
 
 }
