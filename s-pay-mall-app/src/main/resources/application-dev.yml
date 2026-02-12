@@ -12,7 +12,7 @@ app:
   config:
     api-version: v1
     #跨域: 开发阶段设置不限制
-    cross-origin: '*'
+    cross-origin: "*"
     #sc渠道
     group-buy-market:
       api-url: http://localhost:8091
@@ -38,7 +38,27 @@ spring:
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
     filters: stat
-
+  rabbitmq:
+    host: 192.168.6.135
+    port: 5672
+    username: admin
+    password: admin
+    listener:
+      simple:
+        prefetch: 1 # 每个消费者的并发线程数
+    template:
+      delvery-mode: persistent # 消息持久化
+    config:
+      #消费者
+      consumer:
+        #交换机
+        exchange: group_buy_market_exchange
+        #消息主题配置：路由Key、队列
+        topic_team_success:
+          #消息主题
+          routing-key: topic.team_success
+          # 消息队列
+          queue: s_pay_mall_queue_2_topic_team_success
 mybatis:
   mapper-locations: classpath:/mybatis/mapper/*.xml
   config-location: classpath:/mybatis/config/mybatis-config.xml
