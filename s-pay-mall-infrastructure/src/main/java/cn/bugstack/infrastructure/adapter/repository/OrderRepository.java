@@ -10,6 +10,7 @@ import cn.bugstack.domain.order.model.entity.ShopCartEntity;
 import cn.bugstack.domain.order.model.valobj.OrderStatusVO;
 import cn.bugstack.infrastructure.dao.IOrderDao;
 import cn.bugstack.infrastructure.dao.po.PayOrder;
+import cn.bugstack.infrastructure.event.EventPublisher;
 import cn.bugstack.infrastructure.redis.IRedisService;
 import cn.bugstack.types.event.BaseEvent;
 import com.alibaba.fastjson2.JSON;
@@ -34,7 +35,7 @@ public class OrderRepository implements IOrderRepository {
     @Resource
     private IRedisService redisService;
     @Resource
-    private EventBus eventBus;
+    private EventPublisher eventPublisher;
     @Resource
     private PaySuccessMessageEvent paySuccessMessageEvent;
 
@@ -108,8 +109,9 @@ public class OrderRepository implements IOrderRepository {
         // 发送MQ消息
         BaseEvent.EventMessage<PaySuccessMessageEvent.PaySuccessMessage> eventMessage = paySuccessMessageEvent.buildEventMessage(PaySuccessMessageEvent.PaySuccessMessage.builder().tradeNo(orderId).build());
         PaySuccessMessageEvent.PaySuccessMessage paySuccessMessage = eventMessage.getData();
-
-        eventBus.post(JSON.toJSONString(paySuccessMessage));
+        //旧版发送消息
+//        eventBus.post(JSON.toJSONString(paySuccessMessage));
+        eventPublisher.publish(paySuccessMessageEvent.topic(),JSON.toJSONString(paySuccessMessage));
     }
 
     @Override
@@ -163,8 +165,9 @@ public class OrderRepository implements IOrderRepository {
             BaseEvent.EventMessage<PaySuccessMessageEvent.PaySuccessMessage> eventMessage =
                     paySuccessMessageEvent.buildEventMessage(PaySuccessMessageEvent.PaySuccessMessage.builder().tradeNo(outTradeNo).build());
             PaySuccessMessageEvent.PaySuccessMessage paySuccessMessage = eventMessage.getData();
-
-            eventBus.post(JSON.toJSONString(paySuccessMessage));
+            // 旧版发送消息
+            // eventBus.post(JSON.toJSONString(paySuccessMessage));
+            eventPublisher.publish(paySuccessMessageEvent.topic(),JSON.toJSONString(paySuccessMessage));
         });
     }
 

@@ -57,7 +57,8 @@ public class ProductPort implements IProductPort {
         request.setSource(source);
         request.setChannel(channel);
         request.setOutTradeNo(orderId);
-        request.setNotifyUrl(notifyUrl);
+//        request.setNotifyUrl(notifyUrl);
+        request.setNotifyMQ();
         try{
             Call<Response<LockMarketPayOrderResponseDTO>> call = groupBuyMarketService.lockMarketPayOrder(request);
             Response<LockMarketPayOrderResponseDTO> response = call.execute().body();
